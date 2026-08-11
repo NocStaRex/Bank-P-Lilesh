@@ -2113,20 +2113,41 @@ body:has(#forgot-password-view:not(.hidden)) .spx-global-back-container {
 }
 
 /* ===== Services Mega Menu ===== */
+/* Ensure parent navbar list item doesn't stretch */
+.spx-top-nav-items > li,
+.spx-nav-links > li {
+    flex-shrink: 0 !important;
+}
+
+#nav-services-tab,
+#nav-services-tab.mega-active,
+#nav-services-tab.active {
+    font-weight: 600 !important; /* Keep font weight constant so text width doesn't change */
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+}
+
 .spx-services-mega-menu {
     position: absolute !important;
     top: 100% !important;
-    right: 0 !important; /* Anchors right edge strictly under Services tab right boundary */
+    right: 0 !important;
     left: auto !important;
-    transform: none !important; /* Disables centering */
+    transform: none !important;
     width: 560px !important;
     background: #f4f3f8 !important;
+    opacity: 1 !important;
+    z-index: 1002 !important;
+    margin: 0 !important;
     border-top-right-radius: 0 !important; /* Flat top-right corner to join seamlessly with Services tab */
     border-top-left-radius: 0 !important; /* Square top-left corner */
     border-bottom-left-radius: 16px !important;
     border-bottom-right-radius: 16px !important;
-    margin-top: -1px !important;
-    z-index: 1002;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1);
     padding: 1.25rem 1.5rem;
     display: none;
@@ -2148,8 +2169,6 @@ body:has(#forgot-password-view:not(.hidden)) .spx-global-back-container {
     border-bottom-right-radius: 0 !important;
     margin-bottom: -1px !important;
     padding-bottom: 6px !important;
-    padding-left: 1.25rem !important;
-    padding-right: 1.25rem !important;
     position: relative;
     z-index: 1003;
 }
