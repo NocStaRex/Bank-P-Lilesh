@@ -908,6 +908,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const searchTriggerBtn = document.getElementById('search-trigger-btn');
   const searchDropdown = document.getElementById('spx-search-dropdown');
+  const notificationTriggerBtn = document.getElementById('notification-trigger-btn');
+  const notificationDropdown = document.getElementById('spx-notification-dropdown');
   const navProfileBadge = document.getElementById('nav-profile-badge');
 
   function calculateSearchWidth() {
@@ -935,6 +937,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (insuranceMegaMenu){ insuranceMegaMenu.classList.remove('active'); }
     if (servicesMegaMenu){ servicesMegaMenu.classList.remove('active'); }
     if (searchDropdown)  { searchDropdown.classList.remove('active'); }
+    if (notificationDropdown) { notificationDropdown.classList.remove('active'); }
     if (paymentsBtn)     { paymentsBtn.classList.remove('mega-active'); }
     if (depositsBtn)     { depositsBtn.classList.remove('mega-active'); }
     if (loansBtn)        { loansBtn.classList.remove('mega-active'); }
@@ -1127,6 +1130,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ── Notification Dropdown Modal ──
+  if (notificationTriggerBtn && notificationDropdown) {
+    notificationTriggerBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isOpening = !notificationDropdown.classList.contains('active');
+      if (isOpening) {
+        const activeTab = document.querySelector('.spx-nav-item.active');
+        if (activeTab) {
+          previouslyActiveTab = activeTab;
+          activeTab.classList.remove('active');
+        }
+        closeAllMenus(false);
+        notificationDropdown.classList.add('active');
+        if (overlay) overlay.classList.add('active');
+      } else {
+        closeAllMenus(true);
+      }
+    });
+  }
+
   // ── Outside-click / overlay-click: close everything ──
   document.addEventListener('click', (e) => {
     const clickedInsidePayments = paymentsBtn && paymentsBtn.contains(e.target);
@@ -1145,9 +1168,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const clickedInInsuranceMenu   = insuranceMegaMenu && insuranceMegaMenu.contains(e.target);
     const clickedInServicesMenu    = servicesMegaMenu && servicesMegaMenu.contains(e.target);
     const clickedInSearchDropdown  = searchDropdown && searchDropdown.contains(e.target);
+    const clickedNotificationTrigger = notificationTriggerBtn && notificationTriggerBtn.contains(e.target);
+    const clickedInNotificationDropdown = notificationDropdown && notificationDropdown.contains(e.target);
 
-    if (!clickedInsidePayments && !clickedInsideDeposits && !clickedInsideLoans && !clickedInsideCards && !clickedInsideInvestments && !clickedInsideInsurance && !clickedInsideServices && !clickedSearchTrigger &&
-        !clickedInPaymentsMenu && !clickedInDepositsMenu && !clickedInLoansMenu && !clickedInCardsMenu && !clickedInInvestmentsMenu && !clickedInInsuranceMenu && !clickedInServicesMenu && !clickedInSearchDropdown) {
+    if (!clickedInsidePayments && !clickedInsideDeposits && !clickedInsideLoans && !clickedInsideCards && !clickedInsideInvestments && !clickedInsideInsurance && !clickedInsideServices && !clickedSearchTrigger && !clickedNotificationTrigger &&
+        !clickedInPaymentsMenu && !clickedInDepositsMenu && !clickedInLoansMenu && !clickedInCardsMenu && !clickedInInvestmentsMenu && !clickedInInsuranceMenu && !clickedInServicesMenu && !clickedInSearchDropdown && !clickedInNotificationDropdown) {
       closeAllMenus(true);
     }
   });

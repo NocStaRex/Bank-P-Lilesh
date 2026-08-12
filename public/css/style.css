@@ -2273,3 +2273,50 @@ body:has(#forgot-password-view:not(.hidden)) .spx-global-back-container {
   width: auto !important; /* Allow item width to fit content naturally */
   min-width: 80px !important;
 }
+
+/* ===== Notification Modal ===== */
+.spx-notification-modal {
+    position: absolute;
+    top: 100% !important;
+    right: 120px !important; /* Center directly under the bell icon */
+    width: 330px;
+    background: #ffffff;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-left-radius: 16px !important;
+    border-bottom-right-radius: 16px !important;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1);
+    padding: 2rem 1.5rem;
+    display: none;
+    z-index: 1002;
+    margin-top: -1px;
+    box-sizing: border-box;
+}
+
+.spx-notification-modal.active {
+    display: block !important;
+}
+
+.notification-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.notification-graphic {
+    margin-bottom: 1.5rem;
+}
+
+.notification-title {
+    font-size: 1rem;
+    color: #3c1253;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+}
+
+.notification-subtitle {
+    font-size: 0.875rem;
+    color: #666;
+    margin: 0;
+}
