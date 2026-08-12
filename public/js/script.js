@@ -906,6 +906,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const servicesMegaMenu = document.querySelector('.spx-services-mega-menu');
   const overlay        = document.getElementById('mega-menu-overlay');
 
+  const searchTriggerBtn = document.getElementById('search-trigger-btn');
+  const searchDropdown = document.getElementById('spx-search-dropdown');
+  const navProfileBadge = document.getElementById('nav-profile-badge');
+
+  function calculateSearchWidth() {
+    if (!searchDropdown || !depositsBtn || !navProfileBadge) return;
+    const parentRect = searchDropdown.offsetParent
+        ? searchDropdown.offsetParent.getBoundingClientRect()
+        : { left: 0 };
+    const depositsRect = depositsBtn.getBoundingClientRect();
+    const profileRect = navProfileBadge.getBoundingClientRect();
+
+    const leftPos = depositsRect.left - parentRect.left;
+    const width = profileRect.right - depositsRect.left;
+
+    searchDropdown.style.left = leftPos + 'px';
+    searchDropdown.style.width = width + 'px';
+  }
+
   // ── Helper: close ALL mega-menus and restore previously-active tab ──
   function closeAllMenus(restoreTab) {
     if (megaMenu)        { megaMenu.classList.remove('active'); }
@@ -915,6 +934,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (investmentsMegaMenu){ investmentsMegaMenu.classList.remove('active'); }
     if (insuranceMegaMenu){ insuranceMegaMenu.classList.remove('active'); }
     if (servicesMegaMenu){ servicesMegaMenu.classList.remove('active'); }
+    if (searchDropdown)  { searchDropdown.classList.remove('active'); }
     if (paymentsBtn)     { paymentsBtn.classList.remove('mega-active'); }
     if (depositsBtn)     { depositsBtn.classList.remove('mega-active'); }
     if (loansBtn)        { loansBtn.classList.remove('mega-active'); }
@@ -1085,6 +1105,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ── Search Dropdown Modal ──
+  if (searchTriggerBtn && searchDropdown) {
+    searchTriggerBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isOpening = !searchDropdown.classList.contains('active');
+      if (isOpening) {
+        // Snapshot active tab before closing it
+        const activeTab = document.querySelector('.spx-nav-item.active');
+        if (activeTab) {
+          previouslyActiveTab = activeTab;
+          activeTab.classList.remove('active');
+        }
+        closeAllMenus(false);
+        calculateSearchWidth();
+        searchDropdown.classList.add('active');
+        if (overlay) overlay.classList.add('active');
+      } else {
+        closeAllMenus(true);
+      }
+    });
+  }
+
   // ── Outside-click / overlay-click: close everything ──
   document.addEventListener('click', (e) => {
     const clickedInsidePayments = paymentsBtn && paymentsBtn.contains(e.target);
@@ -1094,6 +1136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clickedInsideInvestments = investmentsBtn && investmentsBtn.contains(e.target);
     const clickedInsideInsurance   = insuranceBtn && insuranceBtn.contains(e.target);
     const clickedInsideServices    = servicesBtn && servicesBtn.contains(e.target);
+    const clickedSearchTrigger     = searchTriggerBtn && searchTriggerBtn.contains(e.target);
     const clickedInPaymentsMenu = megaMenu && megaMenu.contains(e.target);
     const clickedInDepositsMenu = depositsMegaMenu && depositsMegaMenu.contains(e.target);
     const clickedInLoansMenu    = loansMegaMenu && loansMegaMenu.contains(e.target);
@@ -1101,9 +1144,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const clickedInInvestmentsMenu = investmentsMegaMenu && investmentsMegaMenu.contains(e.target);
     const clickedInInsuranceMenu   = insuranceMegaMenu && insuranceMegaMenu.contains(e.target);
     const clickedInServicesMenu    = servicesMegaMenu && servicesMegaMenu.contains(e.target);
+    const clickedInSearchDropdown  = searchDropdown && searchDropdown.contains(e.target);
 
-    if (!clickedInsidePayments && !clickedInsideDeposits && !clickedInsideLoans && !clickedInsideCards && !clickedInsideInvestments && !clickedInsideInsurance && !clickedInsideServices &&
-        !clickedInPaymentsMenu && !clickedInDepositsMenu && !clickedInLoansMenu && !clickedInCardsMenu && !clickedInInvestmentsMenu && !clickedInInsuranceMenu && !clickedInServicesMenu) {
+    if (!clickedInsidePayments && !clickedInsideDeposits && !clickedInsideLoans && !clickedInsideCards && !clickedInsideInvestments && !clickedInsideInsurance && !clickedInsideServices && !clickedSearchTrigger &&
+        !clickedInPaymentsMenu && !clickedInDepositsMenu && !clickedInLoansMenu && !clickedInCardsMenu && !clickedInInvestmentsMenu && !clickedInInsuranceMenu && !clickedInServicesMenu && !clickedInSearchDropdown) {
       closeAllMenus(true);
     }
   });
