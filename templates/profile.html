@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPX BANK - My Profile</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/favicon/favicon.png') }}">
+    <meta name="description" content="Your SPX BANK Net Banking Profile">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Notification Toast System -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- MAIN PORTAL WRAPPER -->
+    <div class="portal-wrapper">
+
+        <!-- SPX BANK TOP NAVIGATION STRIP -->
+        <div class="spx-top-nav">
+            <div class="spx-top-nav-container">
+                <div class="spx-top-nav-left">
+                    <span class="spx-top-tab">Banking</span>
+                </div>
+                <div class="spx-top-nav-right">
+                    <a href="#" class="spx-top-link spx-icon-link" onclick="triggerQuickAction('Get Help')">
+                        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        Get Help
+                    </a>
+                    <a href="tel:1800111101" class="spx-top-link spx-icon-link">
+                        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        1800-11-1101
+                    </a>
+                    <div class="spx-top-link spx-lang-selector">
+                        English
+                        <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <span class="spx-top-divider">|</span>
+                    <button class="spx-font-btn">A-</button>
+                    <button class="spx-font-btn">A</button>
+                    <button class="spx-font-btn">A+</button>
+                    <span class="spx-top-divider">|</span>
+                    <button class="spx-logout-btn" onclick="handleLogout()">Logout</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN BRANDING HEADER -->
+        <header class="spx-main-header">
+            <div class="spx-header-container">
+                <div class="spx-logo-block" onclick="window.location.href='/'">
+                    <span class="spx-text">SPX BANK</span>
+                    <span class="net-banking-tag">NET-BANKING</span>
+                </div>
+
+                <!-- NAVIGATION MENU (logged-in state) -->
+                <nav class="spx-main-nav">
+                    <div class="spx-nav-menu logged-in-menu">
+                        <a href="/home/landingPage/homePage" class="spx-nav-item">Overview</a>
+                        <a href="/home/landingPage/manageRelationship/transactionAccounts" class="spx-nav-item">Accounts</a>
+                        <a id="nav-payments-tab" class="spx-nav-item" href="#">Payments</a>
+                        <a id="nav-deposits-tab" class="spx-nav-item" href="#">Deposits</a>
+                        <a id="nav-loans-tab" class="spx-nav-item" href="#">Loans</a>
+                        <a id="nav-cards-tab" class="spx-nav-item" href="#">Cards</a>
+                        <a id="nav-investments-tab" class="spx-nav-item" href="#">Investments</a>
+                        <a id="nav-insurance-tab" class="spx-nav-item" href="#">Insurance</a>
+                        <a id="nav-services-tab" class="spx-nav-item" href="#">Services</a>
+                        {% include 'components/services_mega_menu.html' %}
+                    </div>
+                </nav>
+
+                {% include 'components/mega_menu.html' %}
+                {% include 'components/deposits_mega_menu.html' %}
+                {% include 'components/loans_mega_menu.html' %}
+                {% include 'components/cards_mega_menu.html' %}
+                {% include 'components/investments_mega_menu.html' %}
+                {% include 'components/insurance_mega_menu.html' %}
+                {% include 'components/search_modal.html' %}
+                {% include 'components/notification_modal.html' %}
+
+                <div class="spx-header-actions">
+                    <button class="spx-header-icon-btn" id="search-trigger-btn">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </button>
+                    <button class="spx-header-icon-btn" id="notification-trigger-btn">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    </button>
+                    <a href="/home/landingPage/profilePage/services/manageProfile/personalDetails" class="spx-user-badge" id="nav-profile-badge" style="text-decoration: none;">
+                        <span class="spx-avatar-initials" id="dash-avatar">{{ user_initials }}</span>
+                        <span class="spx-user-profile-label">My Profile</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- PORTAL MAIN CONTENT -->
+        <main class="spx-portal-body">
+            
+            <div class="profile-container">
+                <!-- Breadcrumbs -->
+                <div class="profile-breadcrumbs">
+                    <a href="/home/landingPage/homePage" class="breadcrumb-home">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    </a>
+                    <span class="breadcrumb-divider">&gt;</span>
+                    <span class="breadcrumb-active">Profile</span>
+                </div>
+
+                <div class="profile-layout">
+                    <!-- Left Sidebar -->
+                    <aside class="profile-sidebar">
+                        <div class="profile-sidebar-header">
+                            <div class="profile-avatar-large">
+                                {{ user_initials }}
+                                <div class="profile-avatar-edit">
+                                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#fff" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                </div>
+                            </div>
+                            <h2 class="profile-user-name">{{ user_name }}</h2>
+                            <div class="profile-MID">
+                                <span>MID: xxxxxxx2514</span>
+                                <svg class="profile-eye-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#7e57c2" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </div>
+                            <div class="profile-last-login">LAST LOGIN: {{ last_login }}</div>
+                        </div>
+
+                        <ul class="profile-sidebar-menu">
+                            <li class="active">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                Manage My Profile
+                                <svg class="chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                                Manage My Accounts
+                                <svg class="chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4l3 3"></path></svg>
+                                Access Services
+                                <svg class="chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                                Settings
+                                <svg class="chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+                                Update My Security
+                                <svg class="chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                Refer & Earn Rewards
+                                <svg class="chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                                Get Support
+                                <svg class="chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                                Share Feedback
+                                <svg class="chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </li>
+                        </ul>
+                    </aside>
+
+                    <!-- Right Personal Details Card -->
+                    <section class="profile-content-card">
+                        <!-- Top Navigation Tabs -->
+                        <div class="profile-content-tabs">
+                            <div class="profile-tab active">
+                                Personal Details
+                                <span class="tab-indicator-badge">!</span>
+                            </div>
+                            <div class="profile-tab">
+                                Professional Details
+                                <span class="tab-indicator-badge success">
+                                    <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </span>
+                            </div>
+                            <div class="profile-completion">
+                                Profile Completion: <strong>66%</strong>
+                            </div>
+                        </div>
+
+                        <!-- KYC Banner -->
+                        <div class="profile-kyc-banner">
+                            <div class="kyc-left">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#22c55e" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                                <span>KYC Updated</span>
+                            </div>
+                            <div class="kyc-right">
+                                <a href="#">Update Coming Soon</a>
+                            </div>
+                        </div>
+
+                        <!-- Details Grid (Read-only grey area) -->
+                        <div class="profile-details-grid">
+                            <div class="detail-item">
+                                <label>Date of Birth</label>
+                                <div class="detail-val">
+                                    XX/XX/1969
+                                    <svg class="profile-eye-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#7e57c2" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <label>Mobile number</label>
+                                <div class="detail-val">
+                                    XXXXXX3470
+                                    <svg class="profile-eye-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#7e57c2" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <label>CKYC Number <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#7e57c2" stroke-width="2" style="margin-left:4px"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></label>
+                                <div class="detail-val text-dark">
+                                    Not Available
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <label>PAN</label>
+                                <div class="detail-val">
+                                    XXXXXX396B
+                                    <svg class="profile-eye-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#7e57c2" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </div>
+                            </div>
+                            <div class="detail-item full-width">
+                                <label>Father's Name</label>
+                                <div class="detail-val text-dark">
+                                    Kunal Dahake
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Editable Form Fields Section -->
+                        <div class="profile-form-section">
+                            <div class="form-group full-width">
+                                <input type="text" class="profile-input" value=" " readonly>
+                                <label class="profile-floating-label">Email ID</label>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="text" class="profile-input" value=" " readonly>
+                                    <label class="profile-floating-label">Communication Address</label>
+                                    <svg class="profile-edit-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#7e57c2" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="profile-input" value="MUMBAI" readonly>
+                                    <label class="profile-floating-label">Permanent Address</label>
+                                    <svg class="profile-edit-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#7e57c2" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group dropdown">
+                                    <select class="profile-select">
+                                        <option value="Married" selected>Married</option>
+                                        <option value="Single">Single</option>
+                                    </select>
+                                    <label class="profile-floating-label">Marital Status</label>
+                                    <svg class="select-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#7e57c2" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </div>
+                                <div class="form-group dropdown">
+                                    <select class="profile-select">
+                                        <option value="" disabled selected></option>
+                                        <option value="Hindu">Hindu</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <label class="profile-floating-label">Religion</label>
+                                    <svg class="select-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#7e57c2" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </div>
+                            </div>
+
+                            <div class="form-row half-row">
+                                <div class="form-group dropdown">
+                                    <select class="profile-select">
+                                        <option value="" disabled selected></option>
+                                        <option value="General">General</option>
+                                    </select>
+                                    <label class="profile-floating-label">Category</label>
+                                    <svg class="select-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#7e57c2" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                    </section>
+                </div>
+                
+            </div>
+
+            <!-- Bottom Action Bar (Fixed at bottom or page flow) -->
+            <div class="profile-action-bar">
+                <button class="profile-save-btn" disabled>Save</button>
+            </div>
+
+        </main>
+        
+        <!-- STANDARD FOOTER -->
+        <footer class="spx-footer">
+            <div class="spx-footer-links">
+                <a href="#">About SBI</a> | <a href="#">Terms & Conditions</a> | <a href="#">Privacy Policy</a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- MAIN SCRIPT -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

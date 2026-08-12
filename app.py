@@ -41,6 +41,7 @@ def run_migrations():
     migrations = [
         # Add action column to otps if it doesn't already exist
         "ALTER TABLE otps ADD COLUMN action VARCHAR(50) NOT NULL DEFAULT 'LOGIN'",
+        "ALTER TABLE users ADD COLUMN last_login DATETIME NULL",
     ]
     try:
         conn = get_db_connection()
@@ -161,6 +162,55 @@ def send_real_email(to_email, subject, html_body, plain_text):
         return False
 
 # --- VIEW ROUTES ---
+@app.context_processor
+def inject_user_details():
+    from flask import session as flask_session
+    from datetime import datetime
+    
+    username = flask_session.get('username')
+    if username:
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
+            user = cursor.fetchone()
+            cursor.close()
+            conn.close()
+            
+            if user:
+                full_name = f"{user['first_name']} {user['last_name']}"
+                parts = full_name.split()
+                initials = ''.join([p[0] for p in parts]).upper()[:2] if parts else 'ND'
+                
+                last_login_dt = user.get('last_login')
+                if last_login_dt:
+                    last_login_str = last_login_dt.strftime("%d/%m/%Y, %I:%M %p")
+                else:
+                    # Update DB with current timestamp if NULL
+                    now = datetime.now()
+                    conn = get_db_connection()
+                    cursor = conn.cursor()
+                    cursor.execute("UPDATE users SET last_login=%s WHERE id=%s", (now, user['id']))
+                    conn.commit()
+                    cursor.close()
+                    conn.close()
+                    last_login_str = now.strftime("%d/%m/%Y, %I:%M %p")
+                    
+                return dict(
+                    user_name=full_name,
+                    user_initials=initials,
+                    last_login=last_login_str
+                )
+        except Exception as e:
+            print(f"[CONTEXT ERROR] DB fetch failed: {e}")
+
+    # Fallbacks if no active session or DB fetch fails
+    return dict(
+        user_name=flask_session.get('user_name', 'Nikhil Dahake'),
+        user_initials=flask_session.get('user_initials', 'ND'),
+        last_login=flask_session.get('last_login', '12/08/2026, 02:40 PM')
+    )
+
 @app.route('/')
 def root():
     """Redirect root to canonical welcome URL."""
@@ -189,6 +239,11 @@ def logout_redirect():
 @app.route('/home/landingPage/manageRelationship/transactionAccounts')
 def accounts():
     return render_template('accounts.html')
+
+@app.route('/home/landingPage/profilePage/services/manageProfile/personalDetails')
+def profile():
+    app.logger.info("Accessing Profile Page: /home/landingPage/profilePage/services/manageProfile/personalDetails")
+    return render_template('profile.html')
 # -------------------
 
 @app.route('/api/register', methods=['POST'])
@@ -284,9 +339,29 @@ def login():
 
         # Verify password
         if bcrypt.checkpw(password.encode('utf-8'), user['password_hash'].encode('utf-8')):
-            # Reset attempts on success
-            cursor.execute("UPDATE users SET failed_attempts=0, lockout_until=NULL WHERE id=%s", (user['id'],))
+            from flask import session as flask_session
+            
+            # Get previous last login
+            prev_last_login = user.get('last_login')
+            if prev_last_login:
+                formatted_last_login = prev_last_login.strftime("%d/%m/%Y, %I:%M %p")
+            else:
+                formatted_last_login = ""
+                
+            # Reset attempts on success and update last_login
+            cursor.execute("UPDATE users SET failed_attempts=0, lockout_until=NULL, last_login=NOW() WHERE id=%s", (user['id'],))
             conn.commit()
+            
+            # Compute initials dynamically
+            full_name = f"{user['first_name']} {user['last_name']}"
+            parts = full_name.split()
+            initials = ''.join([p[0] for p in parts]).upper()[:2] if parts else 'ND'
+            
+            # Save to Flask session
+            flask_session['username'] = user['username']
+            flask_session['user_name'] = full_name
+            flask_session['user_initials'] = initials
+            flask_session['last_login'] = formatted_last_login
 
             user_obj = {
                 'username': user['username'],
