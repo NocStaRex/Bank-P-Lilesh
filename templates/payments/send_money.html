@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Money - SBI YONO Clone</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/favicon/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Top Header -->
+    {% include 'components/header.html' %}
+
+    <div class="yono-sm-page-container">
+        <!-- Back Link -->
+        <a href="/home/landingPage/manageRelationship/transactionAccounts" class="yono-sm-back-link">
+            &lt; Back to Home
+        </a>
+
+        <!-- Header -->
+        <h2 class="yono-sm-header">Send Money</h2>
+
+        <!-- Progress Stepper -->
+        <div class="yono-sm-stepper">
+            <div class="yono-sm-step active">
+                <div class="yono-sm-step-circle">1</div>
+                <div class="yono-sm-step-label">Enter Details</div>
+            </div>
+            <div class="yono-sm-step-line"></div>
+            <div class="yono-sm-step">
+                <div class="yono-sm-step-circle">2</div>
+                <div class="yono-sm-step-label">Review</div>
+            </div>
+            <div class="yono-sm-step-line"></div>
+            <div class="yono-sm-step">
+                <div class="yono-sm-step-circle">3</div>
+                <div class="yono-sm-step-label">Receipt</div>
+            </div>
+        </div>
+
+        <div class="yono-sm-content-grid">
+            <!-- Left Side: Form -->
+            <div class="yono-sm-form-container">
+                <h3 class="yono-sm-section-title">Beneficiary Details</h3>
+                
+                <div class="yono-sm-form-row">
+                    <div class="yono-sm-form-group">
+                        <label>Account Number</label>
+                        <input type="text" placeholder="Enter account number">
+                    </div>
+                    <div class="yono-sm-form-group">
+                        <label>Confirm Account Number</label>
+                        <input type="password" placeholder="Re-enter account number">
+                    </div>
+                </div>
+
+                <div class="yono-sm-form-row">
+                    <div class="yono-sm-form-group" style="flex: 1;">
+                        <label>Account Name</label>
+                        <div class="yono-sm-input-with-btn">
+                            <input type="text" readonly placeholder="Name will appear after verification">
+                            <button class="yono-sm-verify-btn">Verify</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="yono-sm-form-row">
+                    <div class="yono-sm-form-group" style="max-width: 50%;">
+                        <label>Amount (Rs.)</label>
+                        <input type="number" placeholder="e.g. 5000">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Source Account & Actions -->
+            <div class="yono-sm-side-container">
+                <div>
+                    <h3 class="yono-sm-section-title">Choose account to pay with</h3>
+                    
+                    <div class="yono-sm-account-card">
+                        <div class="yono-sm-acc-number">{{ account_number if account_number else 'XXXX XXX5 378' }}</div>
+                        <div class="yono-sm-acc-type">Savings Account</div>
+                        <div class="yono-sm-acc-balance">Available Balance: ₹{{ balance if balance else '1,623.55' }}</div>
+                    </div>
+                </div>
+
+                <div class="yono-sm-actions">
+                    <button class="yono-sm-btn-cancel">Cancel</button>
+                    <button class="yono-sm-btn-proceed">Proceed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

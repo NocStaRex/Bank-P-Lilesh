@@ -244,6 +244,10 @@ def accounts():
 def profile():
     app.logger.info("Accessing Profile Page: /home/landingPage/profilePage/services/manageProfile/personalDetails")
     return render_template('profile.html')
+
+@app.route('/home/landingPage/profilePage/send-money/fund-transfer')
+def send_money():
+    return render_template('payments/send_money.html')
 # -------------------
 
 @app.route('/api/register', methods=['POST'])
