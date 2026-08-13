@@ -1218,3 +1218,40 @@ function switchYonoTab(tabName, element) {
         `;
     }
 }
+
+// YONO Statements Section Logic
+function toggleStatementType() {
+    const durationRadio = document.getElementById("selectDuration");
+    const fyRadio = document.getElementById("selectFinancialYear");
+    const durationSelect = document.getElementById("durationSelect");
+    const fySelect = document.getElementById("fySelect");
+
+    if (durationRadio && durationRadio.checked) {
+        durationSelect.disabled = false;
+        fySelect.disabled = true;
+    } else if (fyRadio && fyRadio.checked) {
+        durationSelect.disabled = true;
+        fySelect.disabled = false;
+    }
+}
+
+// YONO Secondary Tabs Logic
+function switchSecondaryTab(tabId, element) {
+    // 1. Update Active State on Secondary Tabs
+    const tabs = document.querySelectorAll(".yono-secondary-tab");
+    tabs.forEach(tab => tab.classList.remove("active"));
+    element.classList.add("active");
+
+    // 2. Toggle content views
+    const summaryTab = document.getElementById("sec-tab-summary");
+    const transactionsTab = document.getElementById("sec-tab-transactions");
+    const statementsTab = document.getElementById("sec-tab-statements");
+    
+    if(summaryTab) summaryTab.style.display = "none";
+    if(transactionsTab) transactionsTab.style.display = "none";
+    if(statementsTab) statementsTab.style.display = "none";
+
+    const activeTab = document.getElementById("sec-tab-" + tabId);
+    if(activeTab) activeTab.style.display = "block";
+}
+

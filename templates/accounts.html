@@ -174,63 +174,132 @@
                         </div>
                         <div class="yono-main-content">
                             <div class="yono-secondary-tabs">
-                                <div class="yono-secondary-tab active">Account Summary</div>
-                                <div class="yono-secondary-tab">Transactions</div>
-                                <div class="yono-secondary-tab">Statements</div>
-                                <div class="yono-secondary-tab">Spend Analysis</div>
+                                <div class="yono-secondary-tab active" onclick="switchSecondaryTab('summary', this)">Account Summary</div>
+                                <div class="yono-secondary-tab" onclick="switchSecondaryTab('transactions', this)">Transactions</div>
+                                <div class="yono-secondary-tab" onclick="switchSecondaryTab('statements', this)">Statements</div>
                             </div>
 
-                            <div class="yono-details-grid">
-                                <div class="yono-details-list">
-                                    <div class="yono-detail-item">
-                                        <span class="yono-detail-label">Account Description</span>
-                                        <span class="yono-detail-value">SB SGSP GOLD</span>
+                            <!-- TAB 1: Account Summary -->
+                            <div id="sec-tab-summary">
+                                <div class="yono-details-grid">
+                                    <div class="yono-details-list">
+                                        <div class="yono-detail-item">
+                                            <span class="yono-detail-label">Account Description</span>
+                                            <span class="yono-detail-value">SB SGSP GOLD</span>
+                                        </div>
+                                        <div class="yono-detail-item">
+                                            <span class="yono-detail-label">Currency</span>
+                                            <span class="yono-detail-value">Rupees</span>
+                                        </div>
+                                        <div class="yono-detail-item">
+                                            <span class="yono-detail-label">Mode of Operation</span>
+                                            <span class="yono-detail-value">Single</span>
+                                        </div>
+                                        <div class="yono-detail-item">
+                                            <span class="yono-detail-label">Rate of Interest</span>
+                                            <span class="yono-detail-value">2.50%</span>
+                                        </div>
+                                        <div class="yono-detail-item">
+                                            <span class="yono-detail-label">Nominee(s)</span>
+                                            <a href="#" class="yono-detail-link">View Details</a>
+                                        </div>
                                     </div>
-                                    <div class="yono-detail-item">
-                                        <span class="yono-detail-label">Currency</span>
-                                        <span class="yono-detail-value">Rupees</span>
-                                    </div>
-                                    <div class="yono-detail-item">
-                                        <span class="yono-detail-label">Mode of Operation</span>
-                                        <span class="yono-detail-value">Single</span>
-                                    </div>
-                                    <div class="yono-detail-item">
-                                        <span class="yono-detail-label">Rate of Interest</span>
-                                        <span class="yono-detail-value">2.50%</span>
-                                    </div>
-                                    <div class="yono-detail-item">
-                                        <span class="yono-detail-label">Nominee(s)</span>
-                                        <a href="#" class="yono-detail-link">View Details</a>
+
+                                    <div class="yono-balance-card">
+                                        <div class="yono-balance-row">
+                                            <span class="yono-balance-label">Available Balance</span>
+                                            <span class="yono-balance-value primary">₹{{ balance if balance else '1,623.55' }}</span>
+                                        </div>
+                                        <div class="yono-balance-row">
+                                            <span class="yono-balance-label">Hold/Lien Amount</span>
+                                            <span class="yono-balance-value">₹0.00</span>
+                                        </div>
+                                        <div class="yono-balance-row">
+                                            <span class="yono-balance-label">Uncleared Balance</span>
+                                            <span class="yono-balance-value">₹0.00</span>
+                                        </div>
+                                        <div class="yono-balance-row">
+                                            <span class="yono-balance-label">MOD Balance</span>
+                                            <span class="yono-balance-value">₹0.00</span>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="yono-balance-card">
-                                    <div class="yono-balance-row">
-                                        <span class="yono-balance-label">Available Balance</span>
-                                        <span class="yono-balance-value primary">₹{{ balance if balance else '1,623.55' }}</span>
-                                    </div>
-                                    <div class="yono-balance-row">
-                                        <span class="yono-balance-label">Hold/Lien Amount</span>
-                                        <span class="yono-balance-value">₹0.00</span>
-                                    </div>
-                                    <div class="yono-balance-row">
-                                        <span class="yono-balance-label">Uncleared Balance</span>
-                                        <span class="yono-balance-value">₹0.00</span>
-                                    </div>
-                                    <div class="yono-balance-row">
-                                        <span class="yono-balance-label">MOD Balance</span>
-                                        <span class="yono-balance-value">₹0.00</span>
+                                <div class="yono-debit-card-box">
+                                    <div class="yono-debit-card-inner" onclick="triggerQuickAction('Debit Card Management')">
+                                        <div>
+                                            <div class="yono-debit-title">Debit Card</div>
+                                            <div class="yono-debit-subtitle">View, Apply &amp; Manage</div>
+                                        </div>
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#333" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="yono-debit-card-box">
-                                <div class="yono-debit-card-inner" onclick="triggerQuickAction('Debit Card Management')">
-                                    <div>
-                                        <div class="yono-debit-title">Debit Card</div>
-                                        <div class="yono-debit-subtitle">View, Apply &amp; Manage</div>
+                            <!-- TAB 2: Transactions -->
+                            <div id="sec-tab-transactions" style="display: none;">
+                                <div class="yono-transactions-table-header" style="margin-top: 25px;">
+                                    <div class="yono-th-date">Date</div>
+                                    <div class="yono-th-desc">Description</div>
+                                    <div class="yono-th-amount">Amount (Rs.)</div>
+                                    <div class="yono-th-balance">Balance (Rs.)</div>
+                                </div>
+                                
+                                <div class="yono-empty-state" style="margin-top: 10px; background: transparent; box-shadow: none;"><p>Transactions view coming soon.</p></div>
+                            </div>
+
+                            <!-- TAB 3: Statements -->
+                            <div id="sec-tab-statements" style="display: none;" class="yono-statements-container">
+                                <h3 class="yono-statement-heading">Request Statement</h3>
+                                
+                                <div class="yono-radio-row">
+                                    <label class="yono-radio-label">
+                                        <input type="radio" id="selectDuration" name="statementType" value="duration" checked onchange="toggleStatementType()">
+                                        <span class="yono-custom-radio"></span>
+                                        Select Duration
+                                    </label>
+                                    <label class="yono-radio-label">
+                                        <input type="radio" id="selectFinancialYear" name="statementType" value="fy" onchange="toggleStatementType()">
+                                        <span class="yono-custom-radio"></span>
+                                        Select Financial Year
+                                    </label>
+                                </div>
+
+                                <div class="yono-dropdowns-row">
+                                    <div class="yono-dropdown-group">
+                                        <label class="yono-dropdown-label">Duration</label>
+                                        <select id="durationSelect" class="yono-select">
+                                            <option>Current Month</option>
+                                            <option>Last Month</option>
+                                            <option>Last 3 Months</option>
+                                            <option>Current Financial Year</option>
+                                            <option>Last Financial Year</option>
+                                            <option>Custom Date Range</option>
+                                        </select>
                                     </div>
-                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#333" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                    <div class="yono-dropdown-group">
+                                        <label class="yono-dropdown-label">Financial Year</label>
+                                        <select id="fySelect" class="yono-select" disabled>
+                                            <option>2026 - 2027</option>
+                                            <option>2025 - 2026</option>
+                                            <option>2024 - 2025</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="yono-dropdowns-row" style="margin-top: 10px;">
+                                    <div class="yono-dropdown-group">
+                                        <label class="yono-dropdown-label">Format</label>
+                                        <select class="yono-select">
+                                            <option>PDF</option>
+                                            <option>Excel (XLSX)</option>
+                                            <option>CSV</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="yono-statement-actions" style="margin-top: 40px;">
+                                    <button class="yono-download-btn">Download</button>
                                 </div>
                             </div>
                         </div>
