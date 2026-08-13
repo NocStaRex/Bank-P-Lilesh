@@ -1177,3 +1177,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+// YONO Accounts Redesign - Subnav Tab Switching Logic
+function switchYonoTab(tabName, element) {
+    // 1. Update Active State on Tabs
+    const tabs = document.querySelectorAll(".yono-subnav-tab");
+    tabs.forEach(tab => tab.classList.remove("active"));
+    element.classList.add("active");
+
+    // 2. Update Breadcrumbs
+    const breadcrumbDivider = document.getElementById("yono-breadcrumb-divider");
+    const breadcrumbActive = document.getElementById("yono-breadcrumb-active");
+    
+    if (tabName !== "Transaction Accounts") {
+        breadcrumbDivider.style.display = "inline";
+        breadcrumbActive.style.display = "inline";
+        breadcrumbActive.innerText = tabName;
+    } else {
+        breadcrumbDivider.style.display = "none";
+        breadcrumbActive.style.display = "none";
+    }
+
+    // 3. Swap Main Layout Area (Left Sidebar + Right Panel)
+    const layoutGrid = document.querySelector(".yono-layout-grid");
+    
+    // Check if original content is backed up; if not, back it up on the first switch
+    if (!window.originalYonoContent) {
+        window.originalYonoContent = layoutGrid.innerHTML;
+    }
+
+    if (tabName === "Transaction Accounts") {
+        // Restore original transaction accounts view
+        layoutGrid.innerHTML = window.originalYonoContent;
+    } else {
+        // Show empty state for all other tabs
+        layoutGrid.innerHTML = `
+            <div class="yono-empty-state">
+                <p>No active records found for this section.</p>
+            </div>
+        `;
+    }
+}

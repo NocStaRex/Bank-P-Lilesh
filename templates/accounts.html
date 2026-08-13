@@ -100,92 +100,138 @@
         <!-- PORTAL MAIN CONTENT -->
         <main class="spx-portal-body">
 
-            <div id="accounts-view" class="spx-dashboard-container">
+            <div id="accounts-view" class="yono-accounts-wrapper">
                 <!-- Breadcrumbs -->
-                <div class="spx-breadcrumbs" style="padding: 10px 20px; font-size: 14px; color: #555;">
-                    Home &gt; Relationship Overview &gt; <strong>Transaction Accounts</strong>
+                <div class="yono-breadcrumbs">
+                    <a href="/home/landingPage/homePage">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    </a>
+                    <span class="yono-breadcrumbs-icon">&gt;</span>
+                    <span style="color: #333;">Relationship Overview</span>
+                    <span class="yono-breadcrumbs-icon" id="yono-breadcrumb-divider" style="display: none;">&gt;</span>
+                    <span id="yono-breadcrumb-active" style="display: none;">Transaction Accounts</span>
                 </div>
 
-                <!-- Category Pills -->
-                <div class="spx-category-pills" style="padding: 10px 20px; display: flex; gap: 10px; border-bottom: 1px solid #ddd; margin-bottom: 20px;">
-                    <button class="spx-pill active" style="background: var(--spx-purple); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-size: 14px; cursor: pointer;">Transaction Accounts</button>
-                    <button class="spx-pill" style="background: #f0f0f0; border: none; padding: 8px 16px; border-radius: 20px; font-size: 14px; cursor: pointer;" onclick="triggerQuickAction('Deposits')">Deposits</button>
-                    <button class="spx-pill" style="background: #f0f0f0; border: none; padding: 8px 16px; border-radius: 20px; font-size: 14px; cursor: pointer;" onclick="triggerQuickAction('Loans')">Loans</button>
-                    <button class="spx-pill" style="background: #f0f0f0; border: none; padding: 8px 16px; border-radius: 20px; font-size: 14px; cursor: pointer;" onclick="triggerQuickAction('Investments')">Investments</button>
-                    <button class="spx-pill" style="background: #f0f0f0; border: none; padding: 8px 16px; border-radius: 20px; font-size: 14px; cursor: pointer;" onclick="triggerQuickAction('Insurance')">Insurance</button>
+                <!-- Top Sub-Nav Bar -->
+                <div class="yono-subnav-bar">
+                    <div class="yono-subnav-tabs">
+                        <div class="yono-subnav-tab active" onclick="switchYonoTab('Transaction Accounts', this)">Transaction Accounts</div>
+                        <div class="yono-subnav-tab" onclick="switchYonoTab('Deposits', this)">Deposits</div>
+                        <div class="yono-subnav-tab" onclick="switchYonoTab('Loans', this)">Loans</div>
+                        <div class="yono-subnav-tab" onclick="switchYonoTab('Investments', this)">Investments</div>
+                        <div class="yono-subnav-tab" onclick="switchYonoTab('Insurance', this)">Insurance</div>
+                    </div>
+                    <button class="yono-view-all-btn">
+                        View All Accounts
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
                 </div>
 
-                <div class="spx-dash-grid">
+                <!-- Layout Grid -->
+                <div class="yono-layout-grid">
                     <!-- Left Sidebar -->
-                    <div class="spx-dash-column-left">
-                        <div class="spx-overview-card bg-purple-gradient">
-                            <div class="spx-ov-card-header">
-                                <span>SAVINGS ACCOUNT</span>
+                    <div class="yono-sidebar">
+                        <input type="text" class="yono-search-box" placeholder="Search here...">
+
+                        <div class="yono-sidebar-section">
+                            <div class="yono-sidebar-title">Savings Account</div>
+                            <div class="yono-active-account-card">
+                                <div class="yono-acc-label">A/C Number</div>
+                                <div class="yono-acc-number">
+                                    {{ account_number if account_number else 'XXXXXXX5378' }}
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </div>
                             </div>
-                            <div class="spx-ov-card-body" style="padding-bottom: 15px;">
-                                <p class="spx-ov-subtext" id="dash-acc-num">ACC: #8849-5768-8597</p>
-                            </div>
+                            <button class="yono-apply-card" onclick="triggerQuickAction('New Savings Account')">
+                                Apply for a new Savings Account
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </button>
+                            <button class="yono-apply-card" onclick="triggerQuickAction('Joint Savings Account')">
+                                Apply for Joint Savings Account
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </button>
                         </div>
-                        
-                        <div class="spx-sidebar-widget" style="margin-top: 20px;">
-                            <ul class="spx-widget-links">
-                                <li><a href="#" onclick="triggerQuickAction('New Savings Account')">Apply for a new Savings Account</a></li>
-                                <li><a href="#" onclick="triggerQuickAction('Joint Savings Account')">Apply for Joint Savings Account</a></li>
-                            </ul>
-                        </div>
-                        
-                        <div class="spx-sidebar-widget" style="margin-top: 20px;">
-                            <div class="spx-widget-header">
-                                <span>Current Account</span>
-                            </div>
-                            <div style="padding: 15px; color: #666; font-size: 14px;">No active current accounts.</div>
+
+                        <div class="yono-sidebar-section">
+                            <div class="yono-sidebar-title">Current Account</div>
+                            <button class="yono-apply-card" onclick="triggerQuickAction('New Current Account')">
+                                Apply for a new Current Account
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </button>
                         </div>
                     </div>
 
                     <!-- Right Main Panel -->
-                    <div class="spx-dash-column-right" style="flex: 2; max-width: none;">
-                        <div class="spx-account-details-panel" style="background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 25px;">
-                            <h2 style="margin-top: 0; color: var(--spx-dark-purple); border-bottom: 1px solid #eee; padding-bottom: 15px; font-size: 18px;">SAVINGS A/C  #8849-5768-8597</h2>
-                            
-                            <div class="spx-sub-tabs" style="display: flex; gap: 25px; border-bottom: 1px solid #eee; margin-bottom: 25px;">
-                                <div class="spx-sub-tab active" style="padding-bottom: 12px; border-bottom: 2px solid var(--spx-purple); color: var(--spx-purple); font-weight: 600; cursor: pointer; font-size: 14px;">Account Summary</div>
-                                <div class="spx-sub-tab" style="padding-bottom: 12px; color: #555; cursor: pointer; font-size: 14px;" onclick="triggerQuickAction('Transactions')">Transactions</div>
-                                <div class="spx-sub-tab" style="padding-bottom: 12px; color: #555; cursor: pointer; font-size: 14px;" onclick="triggerQuickAction('Statements')">Statements</div>
-                                <div class="spx-sub-tab" style="padding-bottom: 12px; color: #555; cursor: pointer; font-size: 14px;" onclick="triggerQuickAction('Spend Analysis')">Spend Analysis</div>
+                    <div class="yono-main-panel" id="yono-main-content-area">
+                        <div class="yono-main-header">
+                            <div class="yono-main-header-left">
+                                <span>SAVINGS A/C &nbsp;&nbsp;&nbsp;&nbsp; {{ account_number if account_number else 'XXXXXXX5378' }} <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
+                            </div>
+                            <a href="#" class="yono-main-header-right">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                Manage Account
+                            </a>
+                        </div>
+                        <div class="yono-main-content">
+                            <div class="yono-secondary-tabs">
+                                <div class="yono-secondary-tab active">Account Summary</div>
+                                <div class="yono-secondary-tab">Transactions</div>
+                                <div class="yono-secondary-tab">Statements</div>
+                                <div class="yono-secondary-tab">Spend Analysis</div>
                             </div>
 
-                            <div style="display: flex; gap: 30px;">
-                                <div style="flex: 1.2;">
-                                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                                        <tr><td style="padding: 10px 0; color: #555;">Account Description:</td><td style="font-weight: 600; text-align: right; color: #333;">SPX Savings Primary Account</td></tr>
-                                        <tr><td style="padding: 10px 0; color: #555; border-top: 1px dashed #eee;">Currency:</td><td style="font-weight: 600; text-align: right; color: #333; border-top: 1px dashed #eee;">USD ($)</td></tr>
-                                        <tr><td style="padding: 10px 0; color: #555; border-top: 1px dashed #eee;">Mode of Operation:</td><td style="font-weight: 600; text-align: right; color: #333; border-top: 1px dashed #eee;">Single</td></tr>
-                                        <tr><td style="padding: 10px 0; color: #555; border-top: 1px dashed #eee;">Rate of Interest:</td><td style="font-weight: 600; text-align: right; color: #333; border-top: 1px dashed #eee;">3.50% p.a.</td></tr>
-                                        <tr><td style="padding: 10px 0; color: #555; border-top: 1px dashed #eee;">Nominee:</td><td style="font-weight: 600; text-align: right; color: var(--spx-blue); border-top: 1px dashed #eee; cursor: pointer;" onclick="triggerQuickAction('Nominee Details')">Registered (View Details)</td></tr>
-                                    </table>
+                            <div class="yono-details-grid">
+                                <div class="yono-details-list">
+                                    <div class="yono-detail-item">
+                                        <span class="yono-detail-label">Account Description</span>
+                                        <span class="yono-detail-value">SB SGSP GOLD</span>
+                                    </div>
+                                    <div class="yono-detail-item">
+                                        <span class="yono-detail-label">Currency</span>
+                                        <span class="yono-detail-value">Rupees</span>
+                                    </div>
+                                    <div class="yono-detail-item">
+                                        <span class="yono-detail-label">Mode of Operation</span>
+                                        <span class="yono-detail-value">Single</span>
+                                    </div>
+                                    <div class="yono-detail-item">
+                                        <span class="yono-detail-label">Rate of Interest</span>
+                                        <span class="yono-detail-value">2.50%</span>
+                                    </div>
+                                    <div class="yono-detail-item">
+                                        <span class="yono-detail-label">Nominee(s)</span>
+                                        <a href="#" class="yono-detail-link">View Details</a>
+                                    </div>
                                 </div>
-                                <div style="flex: 1; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px;">
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                                        <span style="color: #555; font-size: 14px;">Available Balance:</span>
-                                        <span style="font-weight: 700; font-size: 18px; color: var(--spx-dark-purple);">$25,000.00 USD</span>
+
+                                <div class="yono-balance-card">
+                                    <div class="yono-balance-row">
+                                        <span class="yono-balance-label">Available Balance</span>
+                                        <span class="yono-balance-value primary">₹{{ balance if balance else '1,623.55' }}</span>
                                     </div>
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px;">
-                                        <span style="color: #666;">Hold/Lien Amount:</span>
-                                        <span style="font-weight: 600; color: #333;">$0.00 USD</span>
+                                    <div class="yono-balance-row">
+                                        <span class="yono-balance-label">Hold/Lien Amount</span>
+                                        <span class="yono-balance-value">₹0.00</span>
                                     </div>
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px;">
-                                        <span style="color: #666;">Uncleared Balance:</span>
-                                        <span style="font-weight: 600; color: #333;">$0.00 USD</span>
+                                    <div class="yono-balance-row">
+                                        <span class="yono-balance-label">Uncleared Balance</span>
+                                        <span class="yono-balance-value">₹0.00</span>
                                     </div>
-                                    <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                                        <span style="color: #666;">MOD Balance:</span>
-                                        <span style="font-weight: 600; color: #333;">$0.00 USD</span>
+                                    <div class="yono-balance-row">
+                                        <span class="yono-balance-label">MOD Balance</span>
+                                        <span class="yono-balance-value">₹0.00</span>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div style="margin-top: 25px; text-align: right; border-top: 1px solid #eee; padding-top: 15px;">
-                                <a href="#" style="color: var(--spx-purple); text-decoration: none; font-size: 14px; font-weight: 600;" onclick="triggerQuickAction('Debit Card Management')">SPX Debit Card - View, Apply &amp; Manage &rarr;</a>
+
+                            <div class="yono-debit-card-box">
+                                <div class="yono-debit-card-inner" onclick="triggerQuickAction('Debit Card Management')">
+                                    <div>
+                                        <div class="yono-debit-title">Debit Card</div>
+                                        <div class="yono-debit-subtitle">View, Apply &amp; Manage</div>
+                                    </div>
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#333" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </div>
                             </div>
                         </div>
                     </div>
