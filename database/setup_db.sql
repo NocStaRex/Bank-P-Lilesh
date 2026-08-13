@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
     balance DECIMAL(15, 2) NOT NULL DEFAULT 0.00,
     failed_attempts INT DEFAULT 0,
     lockout_until TIMESTAMP NULL,
+    last_login DATETIME DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

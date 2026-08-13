@@ -275,7 +275,7 @@ async function handleLoginSubmit(e) {
     setButtonLoading(btn, true);
 
     try {
-        const response = await fetch('http://localhost:5000/api/login', {
+        const response = await fetch('/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
@@ -440,7 +440,7 @@ async function handleNewPasswordSubmit(e) {
     setButtonLoading(btn, true);
 
     try {
-        const response = await fetch('http://localhost:5000/api/reset-password', {
+        const response = await fetch('/api/reset-password', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -527,7 +527,7 @@ async function sendRealOtpEmail(targetEmail, action) {
             bodyData.username = pendingPayload.username;
         }
         
-        const response = await fetch('http://localhost:5000/api/send-otp', {
+        const response = await fetch('/api/send-otp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(bodyData)
@@ -633,7 +633,7 @@ async function submitOtpVerification() {
     const targetEmail = document.getElementById('otp-target-display').textContent;
 
     try {
-        const response = await fetch('http://localhost:5000/api/verify-otp', {
+        const response = await fetch('/api/verify-otp', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -654,7 +654,7 @@ async function submitOtpVerification() {
             completeLogin(pendingPayload.user);
         } else if (pendingOtpAction === 'REGISTER') {
             try {
-                const regResponse = await fetch('http://localhost:5000/api/register', {
+                const regResponse = await fetch('/api/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(pendingPayload)
